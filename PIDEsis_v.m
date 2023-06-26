@@ -1,7 +1,7 @@
 %Parameters
 cumI0 = 33; % initial number of infected persons
 beta1 = 0.14; % infection rate 1
-beta2 = 0.03; % infection rate 1
+beta2 = 0.03; % infection rate 2
 Tchange = 3; % day in which the infection rate changes
 
 % Fixed parameters
