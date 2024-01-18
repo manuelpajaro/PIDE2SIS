@@ -20,7 +20,7 @@ x = xmin:deltax:xmax;
 t0     = 0;
 tmax   = 7;
 Tsave  = tmax*10;
-nt     = Tsave*10+1;
+nt     = Tsave*10 + 1;
 deltat = (tmax-t0)/(nt-1);
 tl     = linspace(t0, tmax, nt);
 fprintf('\n The time discretization is: %g \n',tl(2)-tl(1));
