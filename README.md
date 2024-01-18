@@ -18,5 +18,7 @@ Parameters:
 
  Tchange -> day in which the infection rate changes
 
+ ## SSAcme. Folder with the SSA scripts to solve the CME and data generated
+
 # Please cite:
 
