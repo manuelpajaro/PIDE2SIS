@@ -1,7 +1,7 @@
 %Parameters
 cumI0 = 33; % initial number of infected persons
 beta1 = 0.14; % infection rate 1
-beta2 = 0.03; % infection rate 2
+beta2 = 0.03; % infection rate 1
 Tchange = 3; % day in which the infection rate changes
 
 % Fixed parameters
@@ -52,8 +52,8 @@ e_lx(isinf(e_lx)==1)=realmax;
 indTc_aux = find(tl<=Tchange);
 indTc = indTc_aux(end);
 % Input function, f(x), construction:
-fx1 = beta1*x.*(N-x)/N; % times beta1 if t<indTc or beta2 if t>=indTc
-fx2 = beta2*x.*(N-x)/N;
+fx1 = b*beta1*x.*(N-x)/N; % times beta1 if t<indTc or beta2 if t>=indTc
+fx2 = b*beta2*x.*(N-x)/N;
 hx = 1-exp((x-N)/b);
 
 % Saving only Tsave simulated times 
@@ -120,7 +120,7 @@ meanI = zeros(size(TT));
 std   = zeros(size(TT)); 
 for i=1:length(TT)
     meanI(i) = trapz(x,x.*PX_sol(i,:));
-    std(i) = sqrt(trapz(x,x.^2.*PX_sol(i,:)));
+    std(i) = sqrt(trapz(x,(x-meanI(i)).^2.*PX_sol(i,:)));
 end
 
 figure

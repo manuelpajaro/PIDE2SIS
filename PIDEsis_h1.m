@@ -1,6 +1,6 @@
 %Parameters
-cumI0 = 24; % initial number of infected persons
-beta = 0.1; % infection rate
+cumI0 = 5; % initial number of infected persons
+beta = 0.01; % infection rate
 
 % Fixed parameters
 N = 10000; 
@@ -11,14 +11,14 @@ gammaI=1/14;
 % Spatial discretization
 xmin = 0;
 xmax = 200;
-deltax = 0.5;
+deltax = 0.1;
 x = xmin:deltax:xmax;
 
 % Time definition
 t0     = 0;
-tmax   = 7;
+tmax   = 60;
 Tsave  = tmax*10;
-nt     = Tsave*10+1;
+nt     = Tsave*100+1;
 deltat = (tmax-t0)/(nt-1);
 tl     = linspace(t0, tmax, nt);
 fprintf('\n The time discretization is: %g \n',tl(2)-tl(1));
@@ -47,7 +47,8 @@ e_lx(isinf(e_lx)==1)=realmax;
 
 % Input function, f(x), construction:
 fx = b*beta*x.*(N-x)/N;
-hx = 1-exp((x-N)/b);
+%hx = 1-exp((x-N)/b);
+hx = 1;
 
 % Saving only Tsave simulated times 
 nt_sol = Tsave +1;
@@ -64,7 +65,7 @@ for j = 2:nt
     PX_bar(isnan(PX_bar)==1)=0;
        
     % Integral term computation by numerical integration (for x<1 Lix = 0)
-    IL0 = length(find(x<1))+1;
+    IL0 = length(find(x<1));
     Lix(IL0:end) = 1/b*e_lx(IL0:end).*cumtrapz(x(IL0:end),e_x(IL0:end).*fx(IL0:end).*PX(IL0:end));
 
     % Explicit method    

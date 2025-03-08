@@ -1,24 +1,26 @@
 %Parameters
-cumI0 = 24; % initial number of infected persons
-beta = 0.1; % infection rate
+%cumI0 = 840; % initial number of infected persons
+%beta = 0.14; % infection rate
+cumI0 = 1801; % initial number of infected persons
+beta = 0.03; % infection rate
 
 % Fixed parameters
-N = 10000; 
+N = 245000; 
 b=1; 
 gammaI=1/14; 
 
       
 % Spatial discretization
 xmin = 0;
-xmax = 200;
-deltax = 0.5;
+xmax = 2500;
+deltax = 1;
 x = xmin:deltax:xmax;
 
 % Time definition
 t0     = 0;
 tmax   = 7;
 Tsave  = tmax*10;
-nt     = Tsave*10+1;
+nt     = Tsave*200+1;
 deltat = (tmax-t0)/(nt-1);
 tl     = linspace(t0, tmax, nt);
 fprintf('\n The time discretization is: %g \n',tl(2)-tl(1));
@@ -40,13 +42,11 @@ PX      = PX0;
 Lix     = zeros(size(PX));
 
 % Time Independent functions
-e_x=exp(x/b);
-e_lx=exp(-x/b);
-e_x(isinf(e_x)==1)=realmax;
-e_lx(isinf(e_lx)==1)=realmax;
+w_xy = 1/b*exp(-(x-x(1))/b);
+int_w_xy = flip(w_xy);
 
 % Input function, f(x), construction:
-fx = b*beta*x.*(N-x)/N;
+fx = beta*x.*(N-x)/N;
 hx = 1-exp((x-N)/b);
 
 % Saving only Tsave simulated times 
@@ -65,7 +65,9 @@ for j = 2:nt
        
     % Integral term computation by numerical integration (for x<1 Lix = 0)
     IL0 = length(find(x<1))+1;
-    Lix(IL0:end) = 1/b*e_lx(IL0:end).*cumtrapz(x(IL0:end),e_x(IL0:end).*fx(IL0:end).*PX(IL0:end));
+    for kk=IL0+1:length(x)
+        Lix(kk) = trapz(x(IL0:kk),int_w_xy(end+IL0-kk:end).*fx(IL0:kk).*PX(IL0:kk));
+    end
 
     % Explicit method    
     PX = (PX_bar+deltat*Lix)./(1-deltat*(gammaI-hx.*fx)); 
@@ -123,7 +125,7 @@ figure
 hold on
 contour(Y',X',PX_sol',300)
 plot(TT,meanI,'k-','LineWidth',1.5)
-ylim([0,150])
+%ylim([0,150])
 
 
 [X,Y] = meshgrid(x,TT(2:end));
@@ -131,22 +133,22 @@ figure
 hold on
 contour(Y',X',PX_sol(2:end,:)',300)
 plot(TT(2:end),meanI(2:end),'k-','LineWidth',1.5)
-ylim([0,150])
+%ylim([0,150])
 
 %% to plot real data
-%Ireal = [24	23	23	27	26	30	30	30]; % Gondomar 2021 04 18 beta=0.1
-%Ireal = [34	27	30	27	26	27	24	18]; % Gondomar 2021 02 7 beta=0.01
-% [X,Y] = meshgrid(x,TT);
-% figure
-% hold on
-% contour(Y',X',PX_sol',300)
-% plot(TT,meanI,'k-','LineWidth',1.5)
-% plot([0,1,2,3,4,5,6,7],Ireal,'rs','MarkerSize',8,'LineWidth',3)
-% legend('P(I)_{PIDE}','I\_mean_{PIDE}','I\_Real')
-% ylim([0,50])
-% xlabel('$t$ (days)','Fontsize',22,'Interpreter','latex')
-% ylabel('$I$','Fontsize',22,'Interpreter','latex')
-% set(gca,'FontSize',12,'TickLabelInterpreter','latex')
-% hold off
+%Ireal = [840 895 937 984 1080 1165 1265 1349]; % A Coruña 2021 01 11 beta=0.14
+Ireal = [1801 1709 1634 1576 1529 1431 1378 1343]; % A Coruña 2021 02 07 beta=0.03
+[X,Y] = meshgrid(x,TT);
+figure
+hold on
+contour(Y',X',PX_sol',300)
+plot(TT,meanI,'k-','LineWidth',1.5)
+plot([0,1,2,3,4,5,6,7],Ireal,'rs','MarkerSize',8,'LineWidth',3)
+legend('P(I)_{PIDE}','I\_mean_{PIDE}','I\_Real')
+ylim([0,2500])
+xlabel('$t$ (days)','Fontsize',22,'Interpreter','latex')
+ylabel('$I$','Fontsize',22,'Interpreter','latex')
+set(gca,'FontSize',12,'TickLabelInterpreter','latex')
+hold off
 
 
