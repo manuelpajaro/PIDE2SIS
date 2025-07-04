@@ -18,7 +18,8 @@ Parameters:
 
  Tchange -> day in which the infection rate changes
 
+ ## ODE. Folder with the scripts to solve the deterministic ODE model
  ## SSAcme. Folder with the SSA scripts to solve the CME and data generated
 
 # Please cite:
-
+Manuel Pájaro, Irene Otero-Muras and Carlos Vázquez (2025). Stochastic modelling of viral infection spread via a Partial Integro-Differential Equation. Infectious Disease Modelling 
