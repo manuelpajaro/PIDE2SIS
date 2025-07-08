@@ -22,4 +22,4 @@ Parameters:
  ## SSAcme. Folder with the SSA scripts to solve the CME and data generated
 
 # Please cite:
-Manuel Pájaro, Irene Otero-Muras and Carlos Vázquez (2025). Stochastic modelling of viral infection spread via a Partial Integro-Differential Equation. Infectious Disease Modelling 
+Manuel Pájaro, Irene Otero-Muras and Carlos Vázquez (2025). Stochastic modelling of viral infection spread via a Partial Integro-Differential Equation. Infectious Disease Modelling. https://doi.org/10.1016/j.idm.2025.07.005
